@@ -80,6 +80,21 @@ public class ProjectionTests extends BaseTest {
 	}
 	
 	@Test
+	public void dynamicTest() throws Exception {
+		List<Comment> comments = commentRepo.findAllByTextLike("comment%", Comment.class);
+		assertThat(comments).hasSize(2);
+		
+		List<CommentProjection> commentProjections = commentRepo.findAllByTextLike("comment%", CommentProjection.class);
+		assertThat(commentProjections).hasSize(2);
+		
+		Comment comment = commentRepo.findByText("comment1", Comment.class);
+		assertThat(comment).isNotNull();
+		
+		CommentProjection commentProjection = commentRepo.findByText("comment1", CommentProjection.class);
+		assertThat(commentProjection).isNotNull();
+	}
+	
+	@Test
 	public void entityTest() throws Exception {
 		Optional<Comment> commentOptional = commentRepo.findCommentByUserName("user1");
 		checkComment(commentOptional.orElseThrow(() -> new Exception("Comment not found!")));
