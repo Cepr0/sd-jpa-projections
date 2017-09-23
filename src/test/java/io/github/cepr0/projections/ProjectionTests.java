@@ -11,9 +11,12 @@ import io.github.cepr0.projections.repo.UserRepo;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,21 +65,21 @@ public class ProjectionTests extends BaseTest {
 	}
 	
 	@Test
-	public void dynamicClassProjectionTest() throws Exception {
-		Optional<CommentProjection> projectionOptional = commentRepo.findByUserName("user1", CommentProjection.class);
-		checkProjection(projectionOptional.orElseThrow(() -> new Exception("Comment not found!")));
-	}
-	
-	@Test
-	public void dynamicIfaceProjectionTest() throws Exception {
-		Optional<ICommentProjection> projectionOptional = commentRepo.findByUserName("user1", ICommentProjection.class);
-		checkProjection(projectionOptional.orElseThrow(() -> new Exception("Comment not found!")));
-	}
-	
-	@Test
-	public void dynamicEntityTest() throws Exception {
+	public void dynamicOptionalTest() throws Exception {
 		Optional<Comment> commentOptional = commentRepo.findByUserName("user1", Comment.class);
-		checkComment(commentOptional.orElseThrow(() -> new Exception("Comment not found!")));
+		assertThat(commentOptional).isNotNull();
+	}
+	
+	@Test
+	public void dynamicPagedTest() throws Exception {
+		Page<Comment> commentPage = commentRepo.getAllByTextLike(new PageRequest(0, 10), "comment%", Comment.class);
+		assertThat(commentPage).isNotNull();
+	}
+	
+	@Test
+	public void dynamicStreamTest() throws Exception {
+		Stream<Comment> commentStream = commentRepo.findStreamByTextLike("comment%", Comment.class);
+		assertThat(commentStream).isNotNull();
 	}
 	
 	@Test

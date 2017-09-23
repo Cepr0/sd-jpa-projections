@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * @author Sergei Poznanski, 2017-09-22
@@ -19,7 +20,8 @@ public interface CommentRepo extends JpaRepository<Comment, Integer> {
 	// doesn't work - throw NoSuchElementException
 	<T> Optional<T> findByUserName(String name, Class<T> type);
 	<T> Page<T> getAllByTextLike(Pageable pageable, String text, Class<T> type);
-
+	<T> Stream<T> findStreamByTextLike(String text, Class<T> type);
+	
 	// work
 	<T> T findByText(String text, Class<T> type);
 	<T> List<T> findAllByTextLike(String text, Class<T> type);
