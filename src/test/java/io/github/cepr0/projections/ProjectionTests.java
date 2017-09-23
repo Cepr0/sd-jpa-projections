@@ -100,10 +100,16 @@ public class ProjectionTests extends BaseTest {
 		checkComment(commentOptional.orElseThrow(() -> new Exception("Comment not found!")));
 	}
 	
+	private void checkProjection(CommentProjection projection) {
+		assertThat(projection.getText()).isEqualTo("comment1");
+		assertThat(projection.getUser().getName()).isEqualTo("user1");
+		assertThat(projection.getUserProfileData()).isEqualTo("profile1");
+	}
+	
 	private void checkProjection(ICommentProjection projection) {
 		assertThat(projection.getText()).isEqualTo("comment1");
 		assertThat(projection.getUser().getName()).isEqualTo("user1");
-		assertThat(projection.getUser().getProfile().getData()).isEqualTo("profile1");
+		assertThat(projection.getUserData()).isEqualTo("profile1");
 	}
 	
 	private void checkComment(Comment comment) {
