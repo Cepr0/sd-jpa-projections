@@ -35,18 +35,18 @@ public class ProjectionTests extends BaseTest {
 	private ProfileRepo profileRepo;
 	
 	@Before
-	public void setUp() throws Exception {
-		List<Profile> profiles = profileRepo.save(asList(
+	public void setUp() {
+		List<Profile> profiles = profileRepo.saveAll(asList(
 				new Profile("profile1"),
 				new Profile("profile2")
 		));
 		
-		List<User> users = userRepo.save(asList(
+		List<User> users = userRepo.saveAll(asList(
 				new User("user1", profiles.get(0)),
 				new User("user2", profiles.get(1))
 		));
 		
-		commentRepo.save(asList(
+		commentRepo.saveAll(asList(
 				new Comment("comment1", users.get(0)),
 				new Comment("comment2", users.get(1))
 		));
@@ -65,25 +65,25 @@ public class ProjectionTests extends BaseTest {
 	}
 	
 	@Test
-	public void dynamicOptionalTest() throws Exception {
+	public void dynamicOptionalTest() {
 		Optional<Comment> commentOptional = commentRepo.findByUserName("user1", Comment.class);
 		assertThat(commentOptional).isNotNull();
 	}
 	
 	@Test
-	public void dynamicPagedTest() throws Exception {
+	public void dynamicPagedTest() {
 		Page<Comment> commentPage = commentRepo.getAllByTextLike(new PageRequest(0, 10), "comment%", Comment.class);
 		assertThat(commentPage).isNotNull();
 	}
 	
 	@Test
-	public void dynamicStreamTest() throws Exception {
+	public void dynamicStreamTest() {
 		Stream<Comment> commentStream = commentRepo.findStreamByTextLike("comment%", Comment.class);
 		assertThat(commentStream).isNotNull();
 	}
 	
 	@Test
-	public void dynamicTest() throws Exception {
+	public void dynamicTest() {
 		List<Comment> comments = commentRepo.findAllByTextLike("comment%", Comment.class);
 		assertThat(comments).hasSize(2);
 		

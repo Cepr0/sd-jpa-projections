@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 @SuppressWarnings("SpringDataRepositoryMethodReturnTypeInspection")
 public interface CommentRepo extends JpaRepository<Comment, Integer> {
 
-	// doesn't work - throw NoSuchElementException
+	// doesn't work in SB 1.5.x - throw NoSuchElementException
 	<T> Optional<T> findByUserName(String name, Class<T> type);
 	<T> Page<T> getAllByTextLike(Pageable pageable, String text, Class<T> type);
 	<T> Stream<T> findStreamByTextLike(String text, Class<T> type);
